@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تقارير وتحليلات الموظفين</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- SheetJS (XLSX) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <!-- الشريط الجانبي -->
+  <aside class="sidebar" aria-label="لوحة جانبية">
+    <div class="sidebar-header">تقارير وتحليلات</div>
+    <nav class="sidebar-menu">
+      <button class="menu-item" data-section="upload">استيراد البيانات</button>
+      <button class="menu-item" data-section="overview">الملخص التنفيذي</button>
+      <button class="menu-item" data-section="all-employees">عرض جميع الموظفين</button>
+      <button class="menu-item" data-section="by-dept">حسب القسم</button>
+      <button class="menu-item" data-section="by-nat">حسب الجنسية</button>
+      <button class="menu-item" data-section="by-gender">حسب الجنس</button>
+
+      <button class="menu-item" data-section="charts">الرسوم البيانية</button>
+      <button class="menu-item" data-section="salary-allowance">الرواتب والبدلات</button>
+      <button class="menu-item" data-section="org">الهيكل التنظيمي</button>
+      <button class="menu-item" data-section="developer">بيانات المطور</button>
+    </nav>
+  </aside>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="main">
+    <header class="app-header">
+      <h1>لوحة التقارير والتحليلات للموظفين</h1>
+      <p class="subtitle">أضف ملف البيانات ثم استعرض التحليلات والرسوم البيانية.</p>
+    </header>
+
+    <!-- استيراد / سحب وإفلات -->
+    <section id="upload" class="card">
+      <h2>استيراد البيانات (سحب وإفلات أو اختيار ملف)</h2>
+      <div id="drop-zone" class="drop-zone" tabindex="0">
+        <div>
+          <strong>اسحب</strong> ملف CSV أو JSON أو Excel (XLS/XLSX) وأفلته هنا، أو
+          <label class="file-label">
+            اختر ملف
+            <input id="file-input" type="file" accept=".csv,.json,.xls,.xlsx" />
+          </label>
+          <button id="btn-load-default" class="menu-item" style="display:inline-block; margin-inline-start:10px;">تحميل ملف Excel الافتراضي</button>
+        </div>
+        <small>ملاحظة: يدعم CSV/JSON. يفضل أن تتضمن الأعمدة: الاسم، المسمى الوظيفي، القسم، الجنسية، الجنس، سنوات الخبرة، الراتب الأساسي، وأي أعمدة للبدلات.</small>
+      </div>
+      <details class="help">
+        <summary>مثال تنسيق CSV</summary>
+        <pre dir="ltr">
+name,jobTitle,department,nationality,gender,experienceYears,baseSalary,allowanceHousing,allowanceTransport
+Ahmed Ali,Developer,IT,EG,M,4,8000,1500,600
+Sara Noor,HR Specialist,HR,SA,F,6,9000,1200,500
+        </pre>
+      </details>
+    </section>
+
+    <!-- الملخص التنفيذي -->
+    <section id="overview" class="card">
+      <h2>الملخص التنفيذي</h2>
+      <div id="executive-summary" class="stats-grid">
+        <!-- يتم توليده برمجياً -->
+      </div>
+    </section>
+
+    <!-- جميع الموظفين -->
+    <section id="all-employees" class="card">
+      <h2>عرض جميع بيانات الموظفين</h2>
+
+      <div class="controls" id="employees-controls">
+        <input id="emp-search" type="text" placeholder="بحث شامل..." />
+
+        <label>القسم</label>
+        <select id="emp-filter-dept"></select>
+
+        <label>المسمى الوظيفي</label>
+        <select id="emp-filter-job"></select>
+
+        <button id="emp-reset" type="button">إعادة ضبط</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="employees-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- حسب القسم -->
+    <section id="by-dept" class="card">
+      <h2>تحليل حسب القسم</h2>
+      <div class="table-wrapper">
+        <table id="dept-table">
+          <thead>
+            <tr>
+              <th>القسم</th>
+              <th>عدد الموظفين</th>
+              <th>متوسط الراتب الأساسي</th>
+              <th>متوسط البدلات</th>
+              <th>متوسط إجمالي الراتب</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- حسب الجنسية -->
+    <section id="by-nat" class="card">
+      <h2>تحليل حسب الجنسية</h2>
+      <div class="table-wrapper">
+        <table id="nat-table">
+          <thead>
+            <tr>
+              <th>الجنسية</th>
+              <th>عدد الموظفين</th>
+              <th>متوسط إجمالي الراتب</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- حسب الجنس -->
+    <section id="by-gender" class="card">
+      <h2>تحليل حسب الجنس</h2>
+      <div class="table-wrapper">
+        <table id="gender-table">
+          <thead>
+            <tr>
+              <th>الجنس</th>
+              <th>عدد الموظفين</th>
+              <th>متوسط إجمالي الراتب</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+
+
+    <!-- الرسوم البيانية -->
+    <section id="charts" class="card">
+      <h2>رسوم بيانية</h2>
+      <div class="charts-grid">
+
+        <div class="chart-card">
+          <h3>توزيع الموظفين حسب الجنس</h3>
+          <canvas id="chartByGender"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>أعلى 6 جنسيات حسب عدد الموظفين</h3>
+          <canvas id="chartTopNat"></canvas>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- الرواتب والبدلات -->
+    <section id="salary-allowance" class="card">
+      <h2>تحليل الرواتب والبدلات</h2>
+      <div class="content">
+        <!-- سيتم توليده -->
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>إجمالي البدلات حسب النوع</h3>
+          <canvas id="chartAllowanceBreakdown"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3>إجمالي البدلات حسب الجنسية (أعلى 10)</h3>
+          <canvas id="chartAllowanceByNat"></canvas>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- الهيكل التنظيمي -->
+    <section id="org" class="card">
+      <h2>الهيكل التنظيمي</h2>
+      <div id="org-tree" class="org-tree"></div>
+    </section>
+
+    <!-- بيانات المطور -->
+    <section id="developer" class="card">
+      <h2>بيانات المطور</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>الاسم (عربي)</th>
+              <th>Name (English)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>محمد مبروك عطية</td>
+              <td dir="ltr">MOHAMED MABROUK ATTIA</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+
+
+  </main>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

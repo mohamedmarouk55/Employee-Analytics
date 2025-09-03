@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>رسوم بيانية - تقارير الموظفين</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <main class="main">
+    <header class="app-header">
+      <h1>رسوم بيانية</h1>
+    </header>
+
+    <section id="upload" class="card">
+      <h2>استيراد البيانات (سحب وإفلات أو اختيار ملف)</h2>
+      <div id="drop-zone" class="drop-zone" tabindex="0">
+        <div>
+          <strong>اسحب</strong> ملف CSV أو JSON أو Excel (XLS/XLSX) وأفلته هنا، أو
+          <label class="file-label">
+            اختر ملف
+            <input id="file-input" type="file" accept=".csv,.json,.xls,.xlsx" />
+          </label>
+          <button id="btn-load-default" class="menu-item" style="display:inline-block; margin-inline-start:10px;">تحميل ملف Excel الافتراضي</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="charts" class="card">
+      <h2>رسوم بيانية</h2>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>توزيع الموظفين حسب الجنس</h3>
+          <canvas id="chartByGender"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>أعلى 6 جنسيات حسب عدد الموظفين</h3>
+          <canvas id="chartTopNat"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
