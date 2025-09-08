@@ -29,16 +29,41 @@ const els = {
   // recList: document.getElementById('recommendations-list'),
 };
 
-// تنقل جانبي بسيط
+// تنقل جانبي + إظهار قسم واحد فقط (Single Page)
 (function sidebarNav(){
   const buttons = document.querySelectorAll('.menu-item');
+  const sections = Array.from(document.querySelectorAll('main > section'));
+
+  function setActive(id){
+    buttons.forEach(b => b.classList.remove('active'));
+    document.querySelector(`.menu-item[data-section="${id}"]`)?.classList.add('active');
+  }
+  function showOnly(id){
+    sections.forEach(s => s.classList.toggle('hidden', s.id !== id));
+    setActive(id);
+  }
+  function goTo(id){
+    if (!id) id = 'overview';
+    showOnly(id);
+    // اختياري: تمرير ناعم لأعلى محتوى الصفحة
+    document.querySelector('.main')?.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-      document.getElementById(btn.dataset.section)?.scrollIntoView({behavior:'smooth', block:'start'});
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      const id = btn.dataset.section;
+      if (id){ location.hash = id; goTo(id); }
     });
   });
+
+  function handleHash(){
+    const id = (location.hash||'').replace(/^#/, '') || 'overview';
+    goTo(id);
+  }
+
+  window.addEventListener('hashchange', handleHash);
+  // عند تحميل الصفحة من رابط مباشر مثل index.html#by-dept
+  setTimeout(handleHash, 0);
 })();
 
 // أدوات مساعدة
@@ -362,7 +387,70 @@ function renderAll(){
   renderCharts();
   renderOrgChart();
   renderSalaryAllowanceAnalysis();
-  renderRecommendations();
+}
+
+// ------ دعم CSV بسيط باستخدام PapaParse + عرض مخططين افتراضيين ------
+(function simpleCsvBoot(){
+  // إن وُجد ملف CSV افتراضي، حمّله لتحفيز العرض تلقائياً على GitHub Pages
+  const defaultCsvUrl = 'assets/data/sample.csv';
+  fetch(defaultCsvUrl, { cache: 'no-store' })
+    .then(r => r.ok ? r.text() : '')
+    .then(text => {
+      if (!text) return; // لا يوجد ملف افتراضي
+      const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+      const rows = (parsed.data || []).map(r => ({
+        name: r.Name || r.name || r['الاسم'] || '',
+        department: r.Department || r.department || r['القسم'] || '',
+        gender: r.Gender || r.gender || r['الجنس'] || '',
+        baseSalary: Number(String(r.Salary || r.salary || r['الراتب'] || '').replace(/[^\d.-]/g,'')) || 0,
+        totalComp: Number(String(r.Salary || r.salary || r['الراتب'] || '').replace(/[^\d.-]/g,'')) || 0,
+        allowanceTotal: 0,
+        __orig: r,
+      }));
+      state.rawRows = rows;
+      normalizeData();
+      renderChartsMinimal();
+    })
+    .catch(() => {});
+})();
+
+function renderChartsMinimal(){
+  const d = state.normalized;
+  if (!d.length) return;
+
+  // عدد الموظفين حسب القسم
+  {
+    const m = utils.groupBy(d, x => x.department || 'غير محدد');
+    const labels = Array.from(m.keys());
+    const values = labels.map(k => (m.get(k) || []).length);
+    const ctx = document.getElementById('chartEmployeesByDept');
+    if (ctx){
+      state.charts.empByDept = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets: [{ label: 'عدد الموظفين', data: values, backgroundColor: '#22c55e' }]},
+        options: { responsive: true, plugins: { legend: { display: false }}}
+      });
+    }
+  }
+
+  // متوسط الراتب حسب الجنس
+  {
+    const m = utils.groupBy(d, x => x.gender || 'غير محدد');
+    const labels = Array.from(m.keys());
+    const values = labels.map(k => {
+      const arr = m.get(k) || [];
+      const avg = utils.mean(arr.map(x => x.totalComp));
+      return Math.round(avg);
+    });
+    const ctx = document.getElementById('chartAvgSalaryByGender');
+    if (ctx){
+      state.charts.avgSalaryByGender = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets: [{ label: 'متوسط الراتب', data: values, backgroundColor: '#3b82f6' }]},
+        options: { responsive: true, plugins: { legend: { display: false }}, scales: { y: { ticks: { callback: v => utils.formatMoney(v) }}} }
+      });
+    }
+  }
 }
 
 function renderExecutiveSummary(){
