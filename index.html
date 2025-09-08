@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="assets/css/styles.css" />
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   <!-- SheetJS (XLSX) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
@@ -151,16 +152,14 @@ Sara Noor,HR Specialist,HR,SA,F,6,9000,1200,500
     <section id="charts" class="card">
       <h2>رسوم بيانية</h2>
       <div class="charts-grid">
-
         <div class="chart-card">
-          <h3>توزيع الموظفين حسب الجنس</h3>
-          <canvas id="chartByGender"></canvas>
+          <h3>عدد الموظفين حسب القسم</h3>
+          <canvas id="chartEmployeesByDept"></canvas>
         </div>
         <div class="chart-card">
-          <h3>أعلى 6 جنسيات حسب عدد الموظفين</h3>
-          <canvas id="chartTopNat"></canvas>
+          <h3>متوسط الراتب حسب الجنس</h3>
+          <canvas id="chartAvgSalaryByGender"></canvas>
         </div>
-
       </div>
     </section>
 
