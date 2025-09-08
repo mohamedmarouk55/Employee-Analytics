@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 # Browsers that we support
 
 last 2 versions
 > 0.5%
 not dead
+=======
+# Browsers that we support
+
+last 2 versions
+> 0.5%
+not dead
+>>>>>>> c09c57706870e66279385c4725172590f736f614
 not IE 11

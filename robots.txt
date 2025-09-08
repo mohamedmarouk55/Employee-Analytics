@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 User-agent: *
 Allow: /
+=======
+User-agent: *
+Allow: /
+>>>>>>> c09c57706870e66279385c4725172590f736f614
 Sitemap: https://mohamedmarouk55.github.io/Employee-Analytics/sitemap.xml
