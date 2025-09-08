@@ -1,0 +1,103 @@
+{
+  "name": "تقارير وتحليلات الموظفين - الإصدار المحسن",
+  "short_name": "تحليلات الموظفين",
+  "description": "تطبيق ويب متقدم لتحليل بيانات الموظفين وعرض تقارير وإحصائيات مختلفة مع ميزات التصدير والطباعة",
+  "version": "2.0.0",
+  "start_url": "/Employee-Analytics/",
+  "scope": "/Employee-Analytics/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icons/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities", "analytics"],
+  "lang": "ar",
+  "dir": "rtl",
+  "screenshots": [
+    {
+      "src": "assets/screenshots/desktop-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "الواجهة الرئيسية للتطبيق"
+    },
+    {
+      "src": "assets/screenshots/mobile-1.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "واجهة الهاتف المحمول"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "استيراد البيانات",
+      "short_name": "استيراد",
+      "description": "استيراد ملف بيانات جديد",
+      "url": "/Employee-Analytics/#upload",
+      "icons": [
+        {
+          "src": "assets/icons/upload-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "الملخص التنفيذي",
+      "short_name": "ملخص",
+      "description": "عرض الملخص التنفيذي",
+      "url": "/Employee-Analytics/#overview",
+      "icons": [
+        {
+          "src": "assets/icons/overview-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "الرسوم البيانية",
+      "short_name": "رسوم",
+      "description": "عرض الرسوم البيانية",
+      "url": "/Employee-Analytics/#charts",
+      "icons": [
+        {
+          "src": "assets/icons/charts-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
+}

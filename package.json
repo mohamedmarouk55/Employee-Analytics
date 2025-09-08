@@ -1,0 +1,62 @@
+{
+  "name": "employee-analytics-enhanced",
+  "version": "2.0.0",
+  "description": "تطبيق ويب متقدم لتحليل بيانات الموظفين وعرض تقارير وإحصائيات مختلفة مع ميزات التصدير والطباعة",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -o",
+    "dev": "npx live-server --port=3000 --open=/index-enhanced.html",
+    "build": "echo 'Building project...' && npm run minify",
+    "minify": "echo 'Minification would go here'",
+    "test": "echo 'Tests would go here'",
+    "deploy": "echo 'Deployment to GitHub Pages'",
+    "lint": "echo 'Linting would go here'"
+  },
+  "keywords": [
+    "employee-analytics",
+    "hr-dashboard",
+    "data-visualization",
+    "arabic-webapp",
+    "rtl-support",
+    "chart-js",
+    "csv-parser",
+    "excel-reader"
+  ],
+  "author": {
+    "name": "محمد مبروك عطية",
+    "name_en": "Mohamed Mabrouk Attia",
+    "email": "mohamed.mabrouk@example.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohamedmarouk55/Employee-Analytics.git"
+  },
+  "homepage": "https://mohamedmarouk55.github.io/Employee-Analytics/",
+  "bugs": {
+    "url": "https://github.com/mohamedmarouk55/Employee-Analytics/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "files": [
+    "index.html",
+    "index-enhanced.html",
+    "assets/",
+    "manifest.json",
+    "robots.txt",
+    "sitemap.xml"
+  ]
+}

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="تطبيق ويب متقدم لتحليل بيانات الموظفين وعرض تقارير وإحصائيات مختلفة مع ميزات التصدير والطباعة" />
+  <meta name="keywords" content="تحليل الموظفين, تقارير الرواتب, إحصائيات الموظفين, تحليل البيانات, HR Analytics" />
+  <meta name="author" content="محمد مبروك عطية" />
+  
+  <title>تقارير وتحليلات الموظفين - الإصدار المحسن</title>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/styles-enhanced.css" />
+  
+  <!-- Manifest and Icons -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+  <meta name="theme-color" content="#0f172a" />
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="تقارير وتحليلات الموظفين" />
+  <meta property="og:description" content="تطبيق ويب متقدم لتحليل بيانات الموظفين" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mohamedmarouk55.github.io/Employee-Analytics/" />
+  
+  <!-- External Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="assets/js/app-enhanced.js" as="script" />
+  <link rel="preload" href="assets/css/styles-enhanced.css" as="style" />
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h2>جاري تحميل التطبيق...</h2>
+      <p>يرجى الانتظار</p>
+    </div>
+  </div>
+
+  <!-- الشريط الجانبي -->
+  <aside class="sidebar" aria-label="لوحة جانبية">
+    <div class="sidebar-header">
+      <span>تقارير وتحليلات</span>
+    </div>
+    <nav class="sidebar-menu" role="navigation">
+      <button class="menu-item" data-section="upload" aria-label="استيراد البيانات">
+        <span class="menu-icon">📁</span>
+        <span class="menu-text">استيراد البيانات</span>
+      </button>
+      <button class="menu-item" data-section="overview" aria-label="الملخص التنفيذي">
+        <span class="menu-icon">📊</span>
+        <span class="menu-text">الملخص التنفيذي</span>
+      </button>
+      <button class="menu-item" data-section="all-employees" aria-label="عرض جميع الموظفين">
+        <span class="menu-icon">👥</span>
+        <span class="menu-text">عرض جميع الموظفين</span>
+      </button>
+      <button class="menu-item" data-section="by-dept" aria-label="تحليل حسب القسم">
+        <span class="menu-icon">🏢</span>
+        <span class="menu-text">حسب القسم</span>
+      </button>
+      <button class="menu-item" data-section="by-nat" aria-label="تحليل حسب الجنسية">
+        <span class="menu-icon">🌍</span>
+        <span class="menu-text">حسب الجنسية</span>
+      </button>
+      <button class="menu-item" data-section="by-gender" aria-label="تحليل حسب الجنس">
+        <span class="menu-icon">⚧️</span>
+        <span class="menu-text">حسب الجنس</span>
+      </button>
+      <button class="menu-item" data-section="charts" aria-label="الرسوم البيانية">
+        <span class="menu-icon">📈</span>
+        <span class="menu-text">الرسوم البيانية</span>
+      </button>
+      <button class="menu-item" data-section="salary-allowance" aria-label="الرواتب والبدلات">
+        <span class="menu-icon">💰</span>
+        <span class="menu-text">الرواتب والبدلات</span>
+      </button>
+      <button class="menu-item" data-section="org" aria-label="الهيكل التنظيمي">
+        <span class="menu-icon">🏗️</span>
+        <span class="menu-text">الهيكل التنظيمي</span>
+      </button>
+      <button class="menu-item" data-section="advanced-analytics" aria-label="التحليلات المتقدمة">
+        <span class="menu-icon">🔬</span>
+        <span class="menu-text">التحليلات المتقدمة</span>
+      </button>
+      <button class="menu-item" data-section="settings" aria-label="الإعدادات">
+        <span class="menu-icon">⚙️</span>
+        <span class="menu-text">الإعدادات</span>
+      </button>
+      <button class="menu-item" data-section="developer" aria-label="بيانات المطور">
+        <span class="menu-icon">👨‍💻</span>
+        <span class="menu-text">بيانات المطور</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="main" role="main">
+    <header class="app-header">
+      <h1>لوحة التقارير والتحليلات للموظفين</h1>
+      <p class="subtitle">أضف ملف البيانات ثم استعرض التحليلات والرسوم البيانية المتقدمة.</p>
+      
+      <!-- Theme Toggle -->
+      <div class="theme-toggle">
+        <button id="theme-toggle-btn" class="btn" aria-label="تبديل المظهر">
+          <span id="theme-icon">🌙</span>
+          <span id="theme-text">المظهر الليلي</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- استيراد / سحب وإفلات -->
+    <section id="upload" class="card">
+      <h2>استيراد البيانات</h2>
+      <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="منطقة سحب وإفلات الملفات">
+        <div class="drop-zone-content">
+          <div class="drop-zone-icon">📁</div>
+          <div class="drop-zone-text">
+            <strong>اسحب</strong> ملف CSV أو JSON أو Excel (XLS/XLSX) وأفلته هنا، أو
+            <label class="file-label">
+              اختر ملف
+              <input id="file-input" type="file" accept=".csv,.json,.xls,.xlsx" />
+            </label>
+          </div>
+          <div class="drop-zone-actions">
+            <button id="btn-load-default" class="btn btn-secondary">
+              📊 تحميل البيانات النموذجية
+            </button>
+          </div>
+        </div>
+        <small class="drop-zone-help">
+          ملاحظة: يدعم CSV/JSON/Excel. يفضل أن تتضمن الأعمدة: الاسم، المسمى الوظيفي، القسم، الجنسية، الجنس، سنوات الخبرة، الراتب الأساسي، وأي أعمدة للبدلات.
+        </small>
+      </div>
+      
+      <details class="help">
+        <summary>مثال تنسيق CSV</summary>
+        <pre dir="ltr">
+name,jobTitle,department,nationality,gender,experienceYears,baseSalary,allowanceHousing,allowanceTransport
+Ahmed Ali,Developer,IT,EG,M,4,8000,1500,600
+Sara Noor,HR Specialist,HR,SA,F,6,9000,1200,500
+        </pre>
+      </details>
+    </section>
+
+    <!-- الملخص التنفيذي -->
+    <section id="overview" class="card">
+      <h2>الملخص التنفيذي</h2>
+      <div id="executive-summary" class="stats-grid">
+        <div class="stat loading">
+          <div class="label">جاري التحميل...</div>
+          <div class="value">---</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- جميع الموظفين -->
+    <section id="all-employees" class="card">
+      <h2>عرض جميع بيانات الموظفين</h2>
+
+      <div class="controls" id="employees-controls">
+        <div class="control-group">
+          <label for="emp-search">البحث الشامل:</label>
+          <input id="emp-search" type="text" placeholder="ابحث في جميع الحقول..." />
+        </div>
+
+        <div class="control-group">
+          <label for="emp-filter-dept">القسم:</label>
+          <select id="emp-filter-dept">
+            <option value="">كل الأقسام</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label for="emp-filter-job">المسمى الوظيفي:</label>
+          <select id="emp-filter-job">
+            <option value="">كل المسميات</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <button id="emp-reset" type="button" class="btn">
+            🔄 إعادة ضبط
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="employees-table">
+          <thead></thead>
+          <tbody>
+            <tr>
+              <td colspan="100%" class="text-center">لا توجد بيانات بعد. يرجى تحميل ملف البيانات أولاً.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- حسب القسم -->
+    <section id="by-dept" class="card">
+      <h2>تحليل حسب القسم</h2>
+      <div class="table-wrapper">
+        <table id="dept-table">
+          <thead>
+            <tr>
+              <th>القسم</th>
+              <th>عدد الموظفين</th>
+              <th>النسبة %</th>
+              <th>متوسط الخبرة</th>
+              <th>متوسط الراتب الأساسي</th>
+              <th>متوسط البدلات</th>
+              <th>متوسط إجمالي الراتب</th>
+              <th>الوسيط للراتب</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="8" class="text-center">لا توجد بيانات بعد.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- حسب الجنسية -->
+    <section id="by-nat" class="card">
+      <h2>تحليل حسب الجنسية</h2>
+      <div class="table-wrapper">
+        <table id="nat-table">
+          <thead>
+            <tr>
+              <th>الجنسية</th>
+              <th>عدد الموظفين</th>
+              <th>النسبة %</th>
+              <th>متوسط الخبرة</th>
+              <th>متوسط إجمالي الراتب</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="5" class="text-center">لا توجد بيانات بعد.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- حسب الجنس -->
+    <section id="by-gender" class="card">
+      <h2>تحليل حسب الجنس</h2>
+      <div class="table-wrapper">
+        <table id="gender-table">
+          <thead>
+            <tr>
+              <th>الجنس</th>
+              <th>عدد الموظفين</th>
+              <th>النسبة %</th>
+              <th>متوسط الخبرة</th>
+              <th>متوسط إجمالي الراتب</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="5" class="text-center">لا توجد بيانات بعد.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- الرسوم البيانية -->
+    <section id="charts" class="card">
+      <h2>رسوم بيانية</h2>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>عدد الموظفين حسب القسم</h3>
+          <canvas id="chartEmployeesByDept" aria-label="رسم بياني يوضح عدد الموظفين في كل قسم"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>متوسط الراتب حسب الجنس</h3>
+          <canvas id="chartAvgSalaryByGender" aria-label="رسم بياني يوضح متوسط الراتب حسب الجنس"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>توزيع الخبرة</h3>
+          <canvas id="chartExperienceDistribution" aria-label="رسم بياني يوضح توزيع سنوات الخبرة"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>توزيع الرواتب</h3>
+          <canvas id="chartSalaryDistribution" aria-label="رسم بياني يوضح توزيع الرواتب"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- الرواتب والبدلات -->
+    <section id="salary-allowance" class="card">
+      <h2>تحليل الرواتب والبدلات</h2>
+      <div class="content">
+        <div class="small">لا توجد بيانات بعد.</div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>إجمالي البدلات حسب النوع</h3>
+          <canvas id="chartAllowanceBreakdown" aria-label="رسم بياني يوضح تفصيل البدلات حسب النوع"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>إجمالي البدلات حسب الجنسية (أعلى 10)</h3>
+          <canvas id="chartAllowanceByNat" aria-label="رسم بياني يوضح البدلات حسب الجنسية"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- الهيكل التنظيمي -->
+    <section id="org" class="card">
+      <h2>الهيكل التنظيمي</h2>
+      <div id="org-tree" class="org-tree">
+        <div class="small">لا توجد بيانات بعد.</div>
+      </div>
+    </section>
+
+    <!-- التحليلات المتقدمة -->
+    <section id="advanced-analytics" class="card">
+      <h2>التحليلات المتقدمة</h2>
+      <div class="advanced-content">
+        <div class="analytics-tabs">
+          <button class="tab-btn active" data-tab="correlations">الارتباطات</button>
+          <button class="tab-btn" data-tab="trends">الاتجاهات</button>
+          <button class="tab-btn" data-tab="insights">الرؤى والتوصيات</button>
+        </div>
+        <div class="tab-content">
+          <div id="correlations-tab" class="tab-panel active">
+            <div class="small">لا توجد بيانات كافية لحساب الارتباطات.</div>
+          </div>
+          <div id="trends-tab" class="tab-panel">
+            <div class="small">لا توجد بيانات لعرض الاتجاهات.</div>
+          </div>
+          <div id="insights-tab" class="tab-panel">
+            <div class="small">لا توجد بيانات لتوليد الرؤى.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- الإعدادات -->
+    <section id="settings" class="card">
+      <h2>الإعدادات</h2>
+      <div class="settings-content">
+        <div class="settings-group">
+          <h3>المظهر</h3>
+          <div class="setting-item">
+            <label for="theme-select">المظهر:</label>
+            <select id="theme-select">
+              <option value="dark">المظهر الليلي</option>
+              <option value="light">المظهر النهاري</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <h3>العملة والتنسيق</h3>
+          <div class="setting-item">
+            <label for="currency-select">العملة:</label>
+            <select id="currency-select">
+              <option value="SAR">ريال سعودي (SAR)</option>
+              <option value="AED">درهم إماراتي (AED)</option>
+              <option value="EGP">جنيه مصري (EGP)</option>
+              <option value="USD">دولار أمريكي (USD)</option>
+              <option value="EUR">يورو (EUR)</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label for="language-select">اللغة:</label>
+            <select id="language-select">
+              <option value="ar">العربية</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <h3>البيانات</h3>
+          <div class="setting-item">
+            <button id="export-settings-btn" class="btn">
+              📤 تصدير الإعدادات
+            </button>
+            <button id="import-settings-btn" class="btn">
+              📥 استيراد الإعدادات
+            </button>
+            <input id="import-settings-input" type="file" accept=".json" style="display: none;" />
+          </div>
+          <div class="setting-item">
+            <button id="reset-settings-btn" class="btn btn-danger">
+              🔄 إعادة ضبط الإعدادات
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- بيانات المطور -->
+    <section id="developer" class="card">
+      <h2>بيانات المطور</h2>
+      <div class="developer-info">
+        <div class="developer-card">
+          <div class="developer-avatar">👨‍💻</div>
+          <div class="developer-details">
+            <h3>محمد مبروك عطية</h3>
+            <p class="developer-title">مطور تطبيقات الويب</p>
+            <div class="developer-contact">
+              <p><strong>الاسم بالإنجليزية:</strong> MOHAMED MABROUK ATTIA</p>
+              <p><strong>التخصص:</strong> تطوير تطبيقات الويب وتحليل البيانات</p>
+              <p><strong>الخبرات:</strong> JavaScript, Python, React, Node.js, Data Analysis</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="app-info">
+          <h3>معلومات التطبيق</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">الإصدار:</span>
+              <span class="info-value">2.0.0 Enhanced</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">تاريخ التطوير:</span>
+              <span class="info-value">ديسمبر 2024</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">التقنيات المستخدمة:</span>
+              <span class="info-value">HTML5, CSS3, JavaScript ES6+, Chart.js</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">الميزات الجديدة:</span>
+              <span class="info-value">تصدير البيانات، طباعة التقارير، تحليلات متقدمة، نظام إشعارات</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Notifications Container -->
+  <div id="notifications" class="notifications-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="assets/js/app-enhanced.js"></script>
+  
+  <!-- Loading Screen Script -->
+  <script>
+    // Hide loading screen when page is fully loaded
+    window.addEventListener('load', () => {
+      const loadingScreen = document.getElementById('loading-screen');
+      if (loadingScreen) {
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 300);
+      }
+    });
+
+    // Theme toggle functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggleBtn = document.getElementById('theme-toggle-btn');
+      const themeSelect = document.getElementById('theme-select');
+      const html = document.documentElement;
+      
+      function updateTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        const icon = document.getElementById('theme-icon');
+        const text = document.getElementById('theme-text');
+        
+        if (theme === 'dark') {
+          icon.textContent = '🌙';
+          text.textContent = 'المظهر الليلي';
+        } else {
+          icon.textContent = '☀️';
+          text.textContent = 'المظهر النهاري';
+        }
+        
+        if (themeSelect) {
+          themeSelect.value = theme;
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('theme', theme);
+      }
+      
+      // Load saved theme
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      updateTheme(savedTheme);
+      
+      // Theme toggle button
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const currentTheme = html.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+          updateTheme(newTheme);
+        });
+      }
+      
+      // Theme select dropdown
+      if (themeSelect) {
+        themeSelect.addEventListener('change', (e) => {
+          updateTheme(e.target.value);
+        });
+      }
+    });
+  </script>
+
+  <style>
+    /* Loading Screen Styles */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-content {
+      text-align: center;
+      color: white;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #22c55e;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Enhanced Drop Zone */
+    .drop-zone-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .drop-zone-icon {
+      font-size: 3rem;
+      opacity: 0.7;
+    }
+
+    .drop-zone-text {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .drop-zone-actions {
+      margin-top: 1rem;
+    }
+
+    .drop-zone-help {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Menu Icons */
+    .menu-icon {
+      font-size: 1.25rem;
+      margin-inline-end: 0.75rem;
+      min-width: 1.5rem;
+      text-align: center;
+    }
+
+    .menu-text {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      margin-top: 1rem;
+    }
+
+    /* Settings Styles */
+    .settings-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .settings-group {
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .settings-group h3 {
+      margin-bottom: 1rem;
+      color: var(--accent);
+      font-size: 1.25rem;
+    }
+
+    .setting-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .setting-item label {
+      font-weight: 600;
+      min-width: 100px;
+    }
+
+    .setting-item select,
+    .setting-item input {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    /* Developer Info */
+    .developer-info {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 1fr;
+    }
+
+    .developer-card {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .developer-avatar {
+      font-size: 4rem;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .developer-details h3 {
+      margin-bottom: 0.5rem;
+      color: var(--text);
+      font-size: 1.5rem;
+    }
+
+    .developer-title {
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .developer-contact p {
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+    }
+
+    .app-info {
+      padding: 1.5rem;
+      background: var(--bg-soft);
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .app-info h3 {
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .info-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: var(--card);
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .info-value {
+      color: var(--muted);
+      text-align: left;
+      max-width: 60%;
+    }
+
+    /* Control Groups */
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 200px;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .developer-info {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .control-group {
+        min-width: 150px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .developer-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .info-value {
+        max-width: 100%;
+      }
+    }
+  </style>
+</body>
+</html>
