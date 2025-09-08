@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://employee-analytics.example.com/sitemap.xml
