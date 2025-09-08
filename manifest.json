@@ -2,7 +2,7 @@
   "name": "تقارير وتحليلات الموظفين",
   "short_name": "تحليلات الموظفين",
   "description": "تطبيق ويب لتحليل بيانات الموظفين وعرض تقارير وإحصائيات مختلفة",
-  "start_url": "/index.html",
+  "start_url": "/Employee-Analytics/index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",

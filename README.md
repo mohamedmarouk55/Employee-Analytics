@@ -5,6 +5,30 @@
 ## رابط الموقع
 يمكنك الوصول إلى التطبيق مباشرة عبر الرابط: [تقارير وتحليلات الموظفين](https://mohamedmarouk55.github.io/Employee-Analytics/)
 
+## كيفية النشر على GitHub Pages
+
+1. قم بإنشاء مستودع جديد على GitHub باسم "Employee-Analytics"
+2. قم برفع الملفات إلى المستودع باستخدام الأوامر التالية:
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/mohamedmarouk55/Employee-Analytics.git
+git push -u origin main
+```
+
+3. قم بتفعيل GitHub Pages من إعدادات المستودع:
+   - انتقل إلى قسم "Settings" ثم "Pages"
+   - اختر المصدر: "Deploy from a branch"
+   - اختر الفرع: "main"
+   - اختر المجلد: "/ (root)"
+   - انقر على "Save"
+
+## رابط الموقع
+يمكنك الوصول إلى التطبيق مباشرة عبر الرابط: [تقارير وتحليلات الموظفين](https://mohamedmarouk55.github.io/Employee-Analytics/)
+
 ## المميزات
 
 - **استيراد البيانات**: دعم لملفات CSV، JSON، وExcel (XLS/XLSX)
