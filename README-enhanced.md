@@ -38,6 +38,12 @@
 يمكنك الوصول إلى التطبيق مباشرة عبر الرابط:
 **[تقارير وتحليلات الموظفين](https://mohamedmarouk55.github.io/Employee-Analytics/)**
 
+### 🎯 روابط سريعة
+- **الإصدار المحسن**: [index-enhanced.html](https://mohamedmarouk55.github.io/Employee-Analytics/index-enhanced.html)
+- **الإصدار الكلاسيكي**: [index.html](https://mohamedmarouk55.github.io/Employee-Analytics/index.html)
+- **التوثيق**: [Wiki](https://github.com/mohamedmarouk55/Employee-Analytics/wiki)
+- **الإصدارات**: [Releases](https://github.com/mohamedmarouk55/Employee-Analytics/releases)
+
 ## 📋 المتطلبات
 
 - متصفح ويب حديث يدعم ES6+ (Chrome 60+, Firefox 55+, Safari 12+, Edge 79+)
