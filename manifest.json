@@ -1,0 +1,22 @@
+{
+  "name": "تقارير وتحليلات الموظفين",
+  "short_name": "تحليلات الموظفين",
+  "description": "تطبيق ويب لتحليل بيانات الموظفين وعرض تقارير وإحصائيات مختلفة",
+  "start_url": "/Employee-Analytics/index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

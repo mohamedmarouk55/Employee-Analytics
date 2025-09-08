@@ -263,20 +263,20 @@ function parseExcel(arrayBuffer){
   state.rawRows = rows;
 }
 
-// تحميل ملف Excel الافتراضي من مجلد المشروع
+// تحميل ملف البيانات الافتراضي من مجلد المشروع
 async function loadDefaultExcel(){
   const btn = document.getElementById('btn-load-default');
   if (btn) btn.disabled = true;
   try {
-    const url = 'excel/تقرير الموظفين - 03 Sep 2025.xls';
+    const url = 'excel/تقرير الموظفين - 03 Sep 2025.csv';
     const res = await fetch(url);
     if (!res.ok) throw new Error('تعذر الوصول للملف. افتح الصفحة عبر خادم محلي لتجاوز قيود المتصفح.');
-    const buf = await res.arrayBuffer();
-    parseExcel(buf);
+    const text = await res.text();
+    state.rawRows = utils.parseCSV(text);
     normalizeData();
     renderAll();
   } catch(e){
-    alert('فشل تحميل ملف Excel الافتراضي: ' + e.message + '\nاقتراح: افتح الصفحة عبر إضافة Live Server في VS Code.');
+    alert('فشل تحميل ملف البيانات الافتراضي: ' + e.message + '\nاقتراح: افتح الصفحة عبر إضافة Live Server في VS Code.');
   } finally {
     if (btn) btn.disabled = false;
   }

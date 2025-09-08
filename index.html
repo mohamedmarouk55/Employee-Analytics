@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="تطبيق ويب لتحليل بيانات الموظفين وعرض تقارير وإحصائيات مختلفة" />
   <title>تقارير وتحليلات الموظفين</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <!-- Manifest and Icons -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
+  <meta name="theme-color" content="#0f172a" />
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -47,7 +53,7 @@
             اختر ملف
             <input id="file-input" type="file" accept=".csv,.json,.xls,.xlsx" />
           </label>
-          <button id="btn-load-default" class="menu-item" style="display:inline-block; margin-inline-start:10px;">تحميل ملف Excel الافتراضي</button>
+          <button id="btn-load-default" class="menu-item" style="display:inline-block; margin-inline-start:10px;">تحميل البيانات النموذجية</button>
         </div>
         <small>ملاحظة: يدعم CSV/JSON. يفضل أن تتضمن الأعمدة: الاسم، المسمى الوظيفي، القسم، الجنسية، الجنس، سنوات الخبرة، الراتب الأساسي، وأي أعمدة للبدلات.</small>
       </div>

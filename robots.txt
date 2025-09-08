@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mohamedmarouk55.github.io/Employee-Analytics/sitemap.xml

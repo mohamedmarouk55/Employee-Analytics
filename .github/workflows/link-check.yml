@@ -1,0 +1,27 @@
+name: Check Links
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install dependencies
+        run: npm install -g broken-link-checker
+      - name: Start HTTP server
+        run: |
+          npm install -g http-server
+          http-server . -p 8080 &
+          sleep 5
+      - name: Check links
+        run: blc http://localhost:8080 -ro
